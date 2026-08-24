@@ -8,7 +8,7 @@ import adminRouter from './routes/admin.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173')
+const allowedOrigins = (process.env.CORS_ORIGIN || 'https://e-wala-eternal.vercel.app')
   .split(',')
   .map((origin) => origin.trim());
 
