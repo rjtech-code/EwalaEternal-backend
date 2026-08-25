@@ -25,3 +25,7 @@ export const BRANDS = [
 ];
 
 export const ASSOC_VALUES = ['none', 'member'];
+
+// Bump this whenever the Membership Policies, Terms & Conditions text changes —
+// keep in sync with frontend/src/data/membership-terms.ts (TERMS_VERSION).
+export const TERMS_VERSION = '2026-08-25';

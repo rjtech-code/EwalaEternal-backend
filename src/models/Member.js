@@ -16,6 +16,10 @@ const memberSchema = new mongoose.Schema(
     brand: { type: String, required: true },
     assoc: { type: String, enum: ['none', 'member'], default: 'none' },
     assocName: { type: String, trim: true, default: '' },
+    // Consent audit trail — the Membership Policies, Terms & Conditions
+    // must be accepted before a member record is created (see routes/members.js).
+    agreedToTerms: { type: Boolean, required: true },
+    termsVersion: { type: String, required: true },
   },
   { timestamps: { createdAt: 'joinedAt', updatedAt: false } }
 );

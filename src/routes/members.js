@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Member from '../models/Member.js';
 import { nextSequence } from '../models/Counter.js';
-import { CATEGORY_CODES, COUNTRY_CODES, BRANDS, ASSOC_VALUES } from '../config/constants.js';
+import { CATEGORY_CODES, COUNTRY_CODES, BRANDS, ASSOC_VALUES, TERMS_VERSION } from '../config/constants.js';
 
 const router = Router();
 
@@ -46,13 +46,16 @@ router.post('/', async (req, res) => {
   try {
     const {
       name, company, country, countryCode, state = '', city, website = '',
-      contact, category, products = [], brand, assoc, assocName = '',
+      contact, category, products = [], brand, assoc, assocName = '', agreedToTerms,
     } = req.body || {};
 
     const missing = ['name', 'company', 'country', 'countryCode', 'city', 'contact', 'category', 'brand', 'assoc']
       .filter((field) => !req.body?.[field]);
     if (missing.length) {
       return res.status(400).json({ error: `Missing required field(s): ${missing.join(', ')}` });
+    }
+    if (agreedToTerms !== true) {
+      return res.status(400).json({ error: 'You must agree to the Membership Policies, Terms & Conditions to join.' });
     }
     if (!CATEGORY_CODES.includes(category)) {
       return res.status(400).json({ error: 'Invalid category.' });
@@ -73,6 +76,7 @@ router.post('/', async (req, res) => {
     const member = await Member.create({
       egId, name, company, country, countryCode, state, city, website, contact,
       category, products: Array.isArray(products) ? products : [], brand, assoc, assocName,
+      agreedToTerms: true, termsVersion: TERMS_VERSION,
     });
 
     res.status(201).json({ member });
